@@ -7,7 +7,7 @@
 		{% for user in users %}
 			<div class="accordion-group">
 				<div class="accordion-heading">
-					<a type="button" class="btn btn-danger delete btn-mini pull-right{% if (su_users.num < 2 and user.su == 'Yes') or nb_users.num <= 1 %} disabled{% endif %}" data-userid="{{ user.id }}" data-username="{{ user.username }}" style="margin: 7px 7px 0 0;"><i class="icon-trash icon-white"></i> Delete</a>
+					<a type="button" class="btn btn-danger delete btn-mini pull-right{% if (su_users.num < 2 and user.su == 'Yes') or nb_users.num <= 1 %} disabled{% endif %}" data-userid="{{ user.id }}" data-username="{{ user.username }}" style="margin: 7px 7px 0 0;"><i class="icon-trash icon-white"></i> 删除</a>
 					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#{{ user.username }}">
 					  {% if user.name %}{{ user.name }} ({{ user.username }}){% else %}{{ user.username }}{% endif %}
 					</a>
@@ -24,10 +24,10 @@
 							
 							<br /> <br />
 
-							<input type="password" name="password1" id="password1-{{ user.id }}" placeholder="Password">
-							<input type="password" name="password2" placeholder="Re-type">
+							<input type="password" name="password1" id="password1-{{ user.id }}" placeholder="请输入密码：">
+							<input type="password" name="password2" placeholder="重新输入密码：">
 							<input type="hidden" name="newUser" value="False">
-							<button type="submit" class="btn">Update</button>
+							<button type="submit" class="btn">更新</button>
 						</form>
 					</div>
 				</div>
@@ -36,7 +36,7 @@
 	</div>
 </div>
 <div class="span2">
-	<a class="btn btn-success btn-block" data-toggle="modal" data-target="#newUser"><i class="icon-plus-sign icon-white"></i> New user</a>
+	<a class="btn btn-success btn-block" data-toggle="modal" data-target="#newUser"><i class="icon-plus-sign icon-white"></i> 新建用户</a>
 </div>
 {% include "includes/modal_new_user.html" %}
 {% if nb_users.num > 1 %}{% include "includes/modal_delete.html" %}{% endif %}

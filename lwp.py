@@ -402,12 +402,12 @@ def lxc_net():
                     lwp.push_net_value('LXC_DHCP_MAX', form['max'])
 
                 if lwp.net_restart() == 0:
-                    flash(u'LXC Network settings applied successfully!',
+                    flash(u'LXC网络设置应用成功!',
                           'success')
                 else:
-                    flash(u'Failed to restart LXC networking.', 'error')
+                    flash(u'重启LXC网络失败.', 'error')
             else:
-                flash(u'Stop all containers before restart lxc-net.',
+                flash(u'在重启LXC网络前停止所有容器.',
                       'warning')
         return render_template('lxc-net.html', containers=lxc.ls(),
                                cfg=lwp.get_net_settings(),
@@ -643,7 +643,7 @@ def action():
             elif action == 'reboot' and name == 'host':
                 if session['su'] != 'Yes':
                     return abort(403)
-                msg = '\v*** LXC Web Panel *** \
+                msg = '\v*** LXC控制台界面 *** \
                         \nReboot from web panel'
                 try:
                     subprocess.check_call('/sbin/shutdown -r now \'%s\'' % msg,

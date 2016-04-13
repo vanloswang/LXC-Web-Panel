@@ -6,31 +6,31 @@
 {% block content %}
 <div class="span9">
 	{{ super() }}
-	{% if session.su == 'Yes' %}<p class="pull-right" style="margin:10px 10px 0 0;"><a class="btn btn-small btn-danger" data-toggle="modal" data-target="#reboot"><i class="icon-off icon-white"></i> Reboot</a></p>
-	{% if containers != [] %}<p class="pull-right" style="margin:10px 10px 0 0;"><a class="btn btn-small btn-inverse" data-toggle="modal" data-target="#cloneCT"> <i class="icon-repeat icon-white"></i> Clone <abbr title="Container">CT</abbr></a></p>{% endif %}
-	<p class="pull-right" style="margin:10px 10px 0 0;"><a class="btn btn-small btn-success" data-toggle="modal" data-target="#createCT"><i class="icon-plus-sign icon-white"></i> Create <abbr title="Container">CT</abbr></a></p>{% endif %}
+	{% if session.su == 'Yes' %}<p class="pull-right" style="margin:10px 10px 0 0;"><a class="btn btn-small btn-danger" data-toggle="modal" data-target="#reboot"><i class="icon-off icon-white"></i> 重启系统</a></p>
+	{% if containers != [] %}<p class="pull-right" style="margin:10px 10px 0 0;"><a class="btn btn-small btn-inverse" data-toggle="modal" data-target="#cloneCT"> <i class="icon-repeat icon-white"></i> 克隆<abbr title="Container">容器</abbr></a></p>{% endif %}
+	<p class="pull-right" style="margin:10px 10px 0 0;"><a class="btn btn-small btn-success" data-toggle="modal" data-target="#createCT"><i class="icon-plus-sign icon-white"></i> 创建<abbr title="Container">容器</abbr></a></p>{% endif %}
 
 	<div class="hero-unit">
-		{% if dist == 'Unknown' %}<div class="alert alert-error">LXC Web Panel is optimized for Ubuntu 12.10 !</div>{% endif %}
+		{% if dist == 'Unknown' %}<div class="alert alert-error">LXC控制台界面专为Linux优化!</div>{% endif %}
 		<div class="row">
 			<div class="span3" style="margin-left:20px;">
-				<h3>{{ dist }} (host)</h3>
-				<p>CPU usage : <span id="cpu-usage" class="hide"></span></p>
+				<h3>{{ dist }} (主机)</h3>
+				<p>CPU使用率：<span id="cpu-usage" class="hide"></span></p>
 				<div class="progress" style="width:250px;">
 					<div class="bar" id="cpu-usage-bar" style="width:0%;"></div>
 				</div>
-				<p>Memory usage : <span id="memory-usage" class="hide"></span></p>
+				<p>内存使用率<span id="memory-usage" class="hide"></span></p>
 				<div class="progress" style="width:250px;">
 					<div class="bar" id="memory-usage-bar" style="width: 0%;"></div>
 					<abbr title="Cached memory"><div class="bar bar-success" id="memory-cache-usage-bar" style="width: 0%;"></div></abbr>
 				</div>
 			</div>
 			<div class="span3" style="margin-top:29px; margin-left:20px;">
-				<p>Disk usage : <span id="disk-usage" class="hide"></span></p>
+				<p>磁盘使用率：<span id="disk-usage" class="hide"></span></p>
 				<div class="progress" style="width:250px;">
 					<div class="bar" id="disk-usage-bar" style="width: 0%;"></div>
 				</div>
-				<p>Uptime : <span id="uptime" class="hide"></span></p>
+				<p>启动时间：<span id="uptime" class="hide"></span></p>
 			</div>
 		</div>
 		<a href="http://lxc-webpanel.github.io/" target="_blank"><span class="label label-info hide" id="version" style="position:relative; float:right; bottom:0; margin:-20px -23px 0 0;"><i class="icon-info-sign icon-white"></i> New version is out ! (<span id="vernumber"></span>)</span></a>
@@ -38,12 +38,12 @@
 	<table class="table table-bordered">
 		<thead>
 			<tr>
-				<th>Status</th>
-				<th>Name</th>
-				<th>Hostname</th>
-				<th>IP Address</th>
-				<th>Mem. usage</th>
-				<th>Actions</th>
+				<th>状态</th>
+				<th>名称</th>
+				<th>主机名</th>
+				<th>IP地址</th>
+				<th>内存使用率</th>
+				<th>动作</th>
 			</tr>
 		</thead>	
 		{% for status in containers_all %}
