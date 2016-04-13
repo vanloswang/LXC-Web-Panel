@@ -5,25 +5,25 @@
   {{ super() }}
   <form action="{{ url_for('login') }}" method="POST" class="form-signin">
     <fieldset>
-    <legend>LXC Web Panel</legend>
+    <legend>LXC控制台界面</legend>
     <div class="control-group">
-      <label class="control-label" for="inputUsername">Username</label>
+      <label class="control-label" for="inputUsername">用户名</label>
       <div class="controls input-prepend">
         <span class="add-on"><i class="icon-user"></i></span>
-        <input id="inputUsername" type="text" placeholder="Username" name="username" autofocus required>
+        <input id="inputUsername" type="text" placeholder="请输入用户名" name="username" autofocus required>
       </div>
     </div>
     <div class="control-group">
-      <label class="control-label" for="inputPassword">Password</label>
+      <label class="control-label" for="inputPassword">密码</label>
      <div class="controls input-prepend">
         <span class="add-on"><i class="icon-lock"></i></span>
-        <input id="inputPassword" type="password" placeholder="Password" name="password" required>
+        <input id="inputPassword" type="password" placeholder="请输入密码" name="password" required>
       </div>
     </div>
     <div class="control-group">
       <div class="controls">
         <input id="inputURL" type="hidden" name="url" value="{{ request.path }}">
-        <input type="submit" class="btn" value="Log in"/>
+        <input type="submit" class="btn" value="登录"/>
       </div>
     </div>
     </fieldset>

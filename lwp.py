@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*- 
 # LXC Python Library
 # for compatibility with LXC 0.8 and 0.9
 # on Ubuntu 12.04/12.10/13.04
@@ -176,31 +177,31 @@ def edit(container=None):
                              form['utsname']):
                 lwp.push_config_value('lxc.utsname', form['utsname'],
                                       container=container)
-                flash(u'Hostname updated for %s!' % container, 'success')
+                flash(u'%s主机名已经更新！' % container, 'success')
 
             if form['flags'] != cfg['flags'] and \
                     re.match('^(up|down)$', form['flags']):
                 lwp.push_config_value('lxc.network.flags', form['flags'],
                                       container=container)
-                flash(u'Network flag updated for %s!' % container, 'success')
+                flash(u'%s 网络标识已经更新！' % container, 'success')
 
             if form['type'] != cfg['type'] and \
                     re.match('^\w+$', form['type']):
                 lwp.push_config_value('lxc.network.type', form['type'],
                                       container=container)
-                flash(u'Link type updated for %s!' % container, 'success')
+                flash(u'%s 链接类型已经更新！' % container, 'success')
 
             if form['link'] != cfg['link'] and \
                     re.match('^[a-zA-Z0-9_-]+$', form['link']):
                 lwp.push_config_value('lxc.network.link', form['link'],
                                       container=container)
-                flash(u'Link name updated for %s!' % container, 'success')
+                flash(u'%s 链接名称已经更新！' % container, 'success')
 
             if form['hwaddr'] != cfg['hwaddr'] and \
                     re.match('^([a-fA-F0-9]{2}[:|\-]?){6}$', form['hwaddr']):
                 lwp.push_config_value('lxc.network.hwaddr', form['hwaddr'],
                                       container=container)
-                flash(u'Hardware address updated for %s!' % container,
+                flash(u'%s 硬件地址已经更新！' % container,
                       'success')
 
             if (not form['ipv4'] and form['ipv4'] != cfg['ipv4']) or \
@@ -208,7 +209,7 @@ def edit(container=None):
                      re.match('^%s$' % ip_regex, form['ipv4'])):
                 lwp.push_config_value('lxc.network.ipv4', form['ipv4'],
                                       container=container)
-                flash(u'IP address updated for %s!' % container, 'success')
+                flash(u'%s IP地址已经更新！' % container, 'success')
 
             if form['memlimit'] != cfg['memlimit'] and \
                     form['memlimit'].isdigit() and \
@@ -224,7 +225,7 @@ def edit(container=None):
                         lxc.cgroup(container,
                                    'lxc.cgroup.memory.limit_in_bytes',
                                    form['memlimit'])
-                    flash(u'Memory limit updated for %s!' % container,
+                    flash(u'%s 内存配额已经更新！' % container,
                           'success')
 
             if form['swlimit'] != cfg['swlimit'] and \
@@ -242,8 +243,7 @@ def edit(container=None):
                 if (form['memlimit'] == '' and form['swlimit'] != '') or \
                         (form['memlimit'] > form['swlimit'] and
                          form['swlimit'] != ''):
-                    flash(u'Can\'t assign swap memory lower than'
-                          ' the memory limit', 'warning')
+                    flash(u'无法指定小于内存配额的SWAP内存。', 'warning')
 
                 elif form['swlimit'] != cfg['swlimit'] and \
                         form['memlimit'] <= form['swlimit']:
@@ -255,7 +255,7 @@ def edit(container=None):
                         lxc.cgroup(container,
                                    'lxc.cgroup.memory.memsw.limit_in_bytes',
                                    form['swlimit'])
-                    flash(u'Swap limit updated for %s!' % container, 'success')
+                    flash(u'%s SWAP配额已经更新！' % container, 'success')
 
             if (not form['cpus'] and form['cpus'] != cfg['cpus']) or \
                     (form['cpus'] != cfg['cpus'] and
@@ -266,7 +266,7 @@ def edit(container=None):
                 if info["state"].lower() != 'stopped':
                         lxc.cgroup(container, 'lxc.cgroup.cpuset.cpus',
                                    form['cpus'])
-                flash(u'CPUs updated for %s!' % container, 'success')
+                flash(u'%s CPU个数已经更新！' % container, 'success')
 
             if (not form['shares'] and form['shares'] != cfg['shares']) or \
                     (form['shares'] != cfg['shares'] and
@@ -276,13 +276,13 @@ def edit(container=None):
                 if info["state"].lower() != 'stopped':
                         lxc.cgroup(container, 'lxc.cgroup.cpu.shares',
                                    form['shares'])
-                flash(u'CPU shares updated for %s!' % container, 'success')
+                flash(u'%s CPU共享已经更新！' % container, 'success')
 
             if form['rootfs'] != cfg['rootfs'] and \
                     re.match('^[a-zA-Z0-9_/\-\.]+', form['rootfs']):
                 lwp.push_config_value('lxc.rootfs', form['rootfs'],
                                       container=container)
-                flash(u'Rootfs updated!' % container, 'success')
+                flash(u'%s 根文件系统已经更新！' % container, 'success')
 
             auto = lwp.ls_auto()
             if form['autostart'] == 'True' and \
@@ -290,16 +290,17 @@ def edit(container=None):
                 try:
                     os.symlink('/var/lib/lxc/%s/config' % container,
                                '/etc/lxc/auto/%s.conf' % container)
-                    flash(u'Autostart enabled for %s' % container, 'success')
+                    flash(u'%s 已开启自启动！' % container, 'success')
                 except OSError:
-                    flash(u'Unable to create symlink \'/etc/lxc/auto/%s.conf\''
+                    flash(u'无法创建链接 \'/etc/lxc/auto/%s.conf\' ！'
                           % container, 'error')
             elif not form['autostart'] and ('%s.conf' % container) in auto:
                 try:
                     os.remove('/etc/lxc/auto/%s.conf' % container)
-                    flash(u'Autostart disabled for %s' % container, 'success')
+                    flash(u'%s 已禁止自启动！' % container, 'success')
                 except OSError:
-                    flash(u'Unable to remove symlink', 'error')
+                    flash(u'无法删除链接 \'/etc/lxc/auto/%s.conf\' ！'
+                          % container, 'error')
 
         info = lxc.info(container)
         status = info['state']
@@ -402,12 +403,12 @@ def lxc_net():
                     lwp.push_net_value('LXC_DHCP_MAX', form['max'])
 
                 if lwp.net_restart() == 0:
-                    flash(u'LXC Network settings applied successfully!',
+                    flash(u'LXC网络设置应用成功!',
                           'success')
                 else:
-                    flash(u'Failed to restart LXC networking.', 'error')
+                    flash(u'重启LXC网络失败.', 'error')
             else:
-                flash(u'Stop all containers before restart lxc-net.',
+                flash(u'在重启LXC网络前停止所有容器.',
                       'warning')
         return render_template('lxc-net.html', containers=lxc.ls(),
                                cfg=lwp.get_net_settings(),
@@ -445,7 +446,7 @@ def lwp_users():
                                        "WHERE su='Yes'", [], one=True)
 
                     if su_user['username'] == request.args.get('username'):
-                        flash(u'Can\'t delete the last admin user : %s' %
+                        flash(u'无法删除最新的管理员用户：%s' %
                               request.args.get('username'), 'error')
                         return redirect(url_for('lwp_users'))
 
@@ -456,7 +457,7 @@ def lwp_users():
                 flash(u'Deleted %s' % request.args.get('username'), 'success')
                 return redirect(url_for('lwp_users'))
 
-            flash(u'Can\'t delete the last user!', 'error')
+            flash(u'无法删除最新的用户！', 'error')
             return redirect(url_for('lwp_users'))
 
         if request.method == 'POST':
@@ -483,7 +484,7 @@ def lwp_users():
                                              request.form['password1'])])
                                     g.db.commit()
                                 else:
-                                    flash(u'Invalid name!', 'error')
+                                    flash(u'无效名称！', 'error')
                             else:
                                 g.db.execute("INSERT INTO users "
                                              "(username, password) VALUES "
@@ -493,14 +494,14 @@ def lwp_users():
                                                   request.form['password1'])])
                                 g.db.commit()
 
-                            flash(u'Created %s' % request.form['username'],
+                            flash(u'已创建 %s。' % request.form['username'],
                                   'success')
                         else:
-                            flash(u'No password match', 'error')
+                            flash(u'没有匹配的密码。', 'error')
                     else:
-                        flash(u'Invalid username or password!', 'error')
+                        flash(u'无效的用户名或密码！', 'error')
                 else:
-                    flash(u'Username already exist!', 'error')
+                    flash(u'用户名已经存在！', 'error')
 
             elif request.form['newUser'] == 'False':
                 if request.form['password1'] == request.form['password2']:
@@ -546,13 +547,13 @@ def lwp_users():
                                           su, request.form['username']])
                             g.db.commit()
 
-                        flash(u'Updated', 'success')
+                        flash(u'已更新。', 'success')
                     else:
-                        flash(u'Invalid name!', 'error')
+                        flash(u'无效名称！', 'error')
                 else:
-                    flash(u'No password match', 'error')
+                    flash(u'没有匹配的密码。', 'error')
             else:
-                flash(u'Unknown error!', 'error')
+                flash(u'未知错误！', 'error')
 
         users = query_db("SELECT id, name, username, su FROM users "
                          "ORDER BY id ASC")
@@ -596,61 +597,61 @@ def action():
                         # Fix bug : "the container is randomly not
                         #            displayed in overview list after a boot"
                         time.sleep(1)
-                        flash(u'Container %s started successfully!' % name,
+                        flash(u'容器 %s 启动成功！' % name,
                               'success')
                     else:
-                        flash(u'Unable to start %s!' % name, 'error')
+                        flash(u'无法启动容器 %s！' % name, 'error')
                 except lxc.ContainerAlreadyRunning:
-                    flash(u'Container %s is already running!' % name, 'error')
+                    flash(u'容器 %s 已经在运行中！' % name, 'error')
             elif action == 'stop':
                 try:
                     if lxc.stop(name) == 0:
-                        flash(u'Container %s stopped successfully!' % name,
+                        flash(u'容器 %s 停止成功！' % name,
                               'success')
                     else:
-                        flash(u'Unable to stop %s!' % name, 'error')
+                        flash(u'无法停止容器 %s！' % name, 'error')
                 except lxc.ContainerNotRunning:
-                    flash(u'Container %s is already stopped!' % name, 'error')
+                    flash(u'容器 %s 已经停止运行！' % name, 'error')
             elif action == 'freeze':
                 try:
                     if lxc.freeze(name) == 0:
-                        flash(u'Container %s frozen successfully!' % name,
+                        flash(u'容器 %s 暂停成功！' % name,
                               'success')
                     else:
-                        flash(u'Unable to freeze %s!' % name, 'error')
+                        flash(u'无法暂停容器 %s！' % name, 'error')
                 except lxc.ContainerNotRunning:
-                    flash(u'Container %s not running!' % name, 'error')
+                    flash(u'容器 %s 未运行！' % name, 'error')
             elif action == 'unfreeze':
                 try:
                     if lxc.unfreeze(name) == 0:
-                        flash(u'Container %s unfrozen successfully!' % name,
+                        flash(u'容器 %s 恢复成功！' % name,
                               'success')
                     else:
-                        flash(u'Unable to unfeeze %s!' % name, 'error')
+                        flash(u'无法恢复容器 %s！' % name, 'error')
                 except lxc.ContainerNotRunning:
-                    flash(u'Container %s not frozen!' % name, 'error')
+                    flash(u'容器 %s 未暂停！' % name, 'error')
             elif action == 'destroy':
                 if session['su'] != 'Yes':
                     return abort(403)
                 try:
                     if lxc.destroy(name) == 0:
-                        flash(u'Container %s destroyed successfully!' % name,
+                        flash(u'容器 %s 销毁成功！' % name,
                               'success')
                     else:
-                        flash(u'Unable to destroy %s!' % name, 'error')
+                        flash(u'无法销毁容器 %s！' % name, 'error')
                 except lxc.ContainerDoesntExists:
-                    flash(u'The Container %s does not exists!' % name, 'error')
+                    flash(u'容器 %s 不存在！' % name, 'error')
             elif action == 'reboot' and name == 'host':
                 if session['su'] != 'Yes':
                     return abort(403)
-                msg = '\v*** LXC Web Panel *** \
-                        \nReboot from web panel'
+                msg = '\v*** LXC控制台界面 *** \
+                        \n通过控制台界面重启系统'
                 try:
                     subprocess.check_call('/sbin/shutdown -r now \'%s\'' % msg,
                                           shell=True)
-                    flash(u'System will now restart!', 'success')
+                    flash(u'统即将重启!', 'success')
                 except:
-                    flash(u'System error!', 'error')
+                    flash(u'系统错误！', 'error')
         try:
             if request.args['from'] == 'edit':
                 return redirect('../%s/edit' % name)
@@ -681,15 +682,15 @@ def create_container():
                     try:
                         if lxc.create(name, template=template,
                                       xargs=command) == 0:
-                            flash(u'Container %s created successfully!' % name,
+                            flash(u'容器 %s 创建成功！' % name,
                                   'success')
                         else:
-                            flash(u'Failed to create %s!' % name, 'error')
+                            flash(u'容器 %s 创建失败！' % name, 'error')
                     except lxc.ContainerAlreadyExists:
-                        flash(u'The Container %s is already created!' % name,
+                        flash(u'容器 %s 已经创建！' % name,
                               'error')
                     except subprocess.CalledProcessError:
-                        flash(u'Error!' % name, 'error')
+                        flash(u'错误%s！' % name, 'error')
 
                 elif storage_method == 'directory':
                     directory = request.form['dir']
@@ -700,15 +701,15 @@ def create_container():
                             if lxc.create(name, template=template,
                                           storage='dir --dir %s' % directory,
                                           xargs=command) == 0:
-                                flash(u'Container %s created successfully!'
+                                flash(u'容器 %s 创建成功！'
                                       % name, 'success')
                             else:
                                 flash(u'Failed to create %s!' % name, 'error')
                         except lxc.ContainerAlreadyExists:
-                            flash(u'The Container %s is already created!'
+                            flash(u'容器 %s 已经创建！'
                                   % name, 'error')
                         except subprocess.CalledProcessError:
-                            flash(u'Error!' % name, 'error')
+                            flash(u'错误%s！' % name, 'error')
 
                 elif storage_method == 'zfs':
                     zfs = request.form['zpoolname']
@@ -716,13 +717,13 @@ def create_container():
                     if re.match('^[a-zA-Z0-9_/-]+$', zfs) and zfs != '':
                         try:
                             if lxc.create(name, template=template, storage='zfs --zfsroot %s' % zfs, xargs=command) == 0:
-                                flash(u'Container %s created successfully!' % name, 'success')
+                                flash(u'容器 %s 创建成功！' % name, 'success')
                             else:
-                                flash(u'Failed to create %s!' % name, 'error')
+                                flash(u'容器 %s 创建失败！' % name, 'error')
                         except lxc.ContainerAlreadyExists:
-                            flash(u'The Container %s is already created!' % name, 'error')
+                            flash(u'容器 %s 已经创建！' % name, 'error')
                         except subprocess.CalledProcessError:
-                            flash(u'Error!' % name, 'error')
+                            flash(u'错误%s！' % name, 'error')
 
                 elif storage_method == 'lvm':
                     lvname = request.form['lvname']
@@ -744,24 +745,24 @@ def create_container():
                         if lxc.create(name, template=template,
                                       storage=storage_options,
                                       xargs=command) == 0:
-                            flash(u'Container %s created successfully!' % name,
+                            flash(u'容器 %s 创建成功！' % name,
                                   'success')
                         else:
-                            flash(u'Failed to create %s!' % name, 'error')
+                            flash(u'容器 %s 创建失败！' % name, 'error')
                     except lxc.ContainerAlreadyExists:
-                        flash(u'The container/logical volume %s is '
-                              'already created!' % name, 'error')
+                        flash(u'容器/逻辑卷 %s '
+                              u'已经创建！' % name, 'error')
                     except subprocess.CalledProcessError:
-                        flash(u'Error!' % name, 'error')
+                        flash(u'错误%s！' % name, 'error')
 
                 else:
-                    flash(u'Missing parameters to create container!', 'error')
+                    flash(u'缺少参数来创建容器！', 'error')
 
             else:
                 if name == '':
-                    flash(u'Please enter a container name!', 'error')
+                    flash(u'请输入容器名称！', 'error')
                 else:
-                    flash(u'Invalid name for \"%s\"!' % name, 'error')
+                    flash(u'容器 \"%s\" 名称无效！' % name, 'error')
 
         return redirect(url_for('home'))
     return render_template('login.html')
@@ -792,22 +793,22 @@ def clone_container():
                 try:
                     out = lxc.clone(orig=orig, new=name, snapshot=snapshot)
                 except lxc.ContainerAlreadyExists:
-                    flash(u'The Container %s already exists!' % name, 'error')
+                    flash(u'容器 %s 已经存在！' % name, 'error')
                 except subprocess.CalledProcessError:
-                    flash(u'Can\'t snapshot a directory', 'error')
+                    flash(u'无法为一个目录创建快照！', 'error')
 
                 if out and out == 0:
                     flash(u'Container %s cloned into %s successfully!'
                           % (orig, name), 'success')
                 elif out and out != 0:
-                    flash(u'Failed to clone %s into %s!' % (orig, name),
+                    flash(u'将 %s 克隆为 %s 失败！' % (orig, name),
                           'error')
 
             else:
                 if name == '':
-                    flash(u'Please enter a container name!', 'error')
+                    flash(u'请输入容器名称！', 'error')
                 else:
-                    flash(u'Invalid name for \"%s\"!' % name, 'error')
+                    flash(u'容器 \"%s\" 名称无效！' % name, 'error')
 
         return redirect(url_for('home'))
     return render_template('login.html')
@@ -832,13 +833,13 @@ def login():
             session['username'] = user['username']
             session['name'] = user['name']
             session['su'] = user['su']
-            flash(u'You are logged in!', 'success')
+            flash(u'已经登陆！', 'success')
 
             if current_url == url_for('login'):
                 return redirect(url_for('home'))
             return redirect(current_url)
 
-        flash(u'Invalid username or password!', 'error')
+        flash(u'无效的用户名或密码!', 'error')
     return render_template('login.html')
 
 
@@ -850,7 +851,7 @@ def logout():
     session.pop('username', None)
     session.pop('name', None)
     session.pop('su', None)
-    flash(u'You are logged out!', 'success')
+    flash(u'已经成功注销！', 'success')
     return redirect(url_for('login'))
 
 
@@ -916,7 +917,7 @@ def check_session_limit():
         limit = now - 60 * int(config.get('session', 'time'))
         last_activity = session.get('last_activity')
         if last_activity < limit:
-            flash(u'Session timed out !', 'info')
+            flash(u'会话已经超时！', 'info')
             logout()
         else:
             session['last_activity'] = now
